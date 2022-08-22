@@ -7,7 +7,7 @@ const surl='https://client.arkoselabs.com'
 const apiKey = process.env.API_KEY
 
 async function webSubmit (token) {
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
     await page.waitForSelector('#FunCaptcha')
