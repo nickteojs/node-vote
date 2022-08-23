@@ -1,10 +1,11 @@
 import axios from "axios";
 import puppeteer from "puppeteer";
 
-const sitekey = '32F41B72-B632-4273-BD6E-9F487499B5B3'
-const url='https://gtop100.com/topsites/MapleStory/sitedetails/MapleMS-Old-School-with-Modern-Features-Progressive-EXP--Linked-Stats--No-HP-Washing-101025?vote=1&pingUsername=2747'
-const surl='https://client.arkoselabs.com'
 const apiKey = process.env.API_KEY
+const USER_ID = process.env.USER_ID
+const sitekey = '32F41B72-B632-4273-BD6E-9F487499B5B3'
+const surl='https://client.arkoselabs.com'
+const url=`https://gtop100.com/topsites/MapleStory/sitedetails/MapleMS-Old-School-with-Modern-Features-Progressive-EXP--Linked-Stats--No-HP-Washing-101025?vote=1&pingUsername=${USER_ID}`
 
 async function webSubmit (token) {
     const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
@@ -13,7 +14,9 @@ async function webSubmit (token) {
     await page.waitForSelector('#FunCaptcha')
     await page.$eval("input[name='fc-token']", (el, token) => el.value = token, token)
     await page.click('#votebutton')
-    await browser.close();
+    setTimeout(() => {
+        browser.close()
+    }, 5000)
 }
 
 function checkStatus (id) {
@@ -48,3 +51,4 @@ function post() {
 }
 
 post()
+// webSubmit()
