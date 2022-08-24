@@ -14,6 +14,20 @@ async function webSubmit (token) {
     await page.waitForSelector('#FunCaptcha')
     await page.$eval("input[name='fc-token']", (el, token) => el.value = token, token)
     await page.click('#votebutton')
+    await page.waitForSelector('#captcha-status > p > b', {timeout: 5000})
+    .then(async () => {
+        console.log("Message present")
+        const resultElement = await page.$$('#captcha-status > p > b')
+        resultElement.forEach(async e => {
+            const resultContent = await e.evaluate(e => e.textContent, resultElement)
+            if (resultContent !== "") {
+                console.log(resultContent)
+            }
+        })
+    })
+    .catch(() => {
+        console.log("Success text selector error: Vote should have passed.")
+    })    
     setTimeout(() => {
         browser.close()
     }, 5000)
